@@ -16,56 +16,55 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch user on initial load to check session status
-    fetchUser();
+    // Check for token and fetch user on initial load
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const fetchUser = async () => {
     try {
       setLoading(true);
-      // The backend /api/auth/me now checks the session
       const response = await axios.get('/api/auth/me');
       setUser(response.data);
     } catch (error) {
-      // If /me fails (e.g., not authenticated), clear user
-      console.error('Error fetching user session:', error);
+      console.error('Error fetching user:', error);
       setUser(null);
+      localStorage.removeItem('token');
     } finally {
       setLoading(false);
     }
   };
 
-  // Login function now initiates Google OAuth redirect
+  // Login function initiates Google OAuth redirect
   const login = () => {
-    // Redirect the user to the backend's Google OAuth route
-    // Use the appropriate backend URL based on environment
     const backendUrl = process.env.NODE_ENV === 'development' 
       ? 'http://localhost:5000' 
       : 'https://nxt-round.onrender.com';
     window.location.href = `${backendUrl}/api/auth/google`;
   };
 
-  // Register function is removed as registration happens via Google OAuth
+  // Handle auth callback with token
+  const handleAuthCallback = (token) => {
+    localStorage.setItem('token', token);
+    fetchUser();
+  };
 
-  const logout = async () => {
-    try {
-      await axios.get('/api/auth/logout'); // Call backend logout endpoint
-      setUser(null);
-      // No need to remove token or headers as we use sessions now
-    } catch (error) {
-      console.error('Error logging out:', error);
-      // Even if backend logout fails, clear frontend state
-      setUser(null);
-    }
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
   };
 
   const value = {
     user,
     loading,
     login,
-    // register is removed
     logout,
-    fetchUser // Expose fetchUser if needed elsewhere (e.g., after callback)
+    fetchUser,
+    handleAuthCallback
   };
 
   return (

@@ -33,15 +33,15 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-// Serialize user into the session
+// For JWT-based auth, we don't need serialize/deserialize
+// These are kept for compatibility but won't be used
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// Deserialize user from the session
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id).select('-password'); // Exclude password
+    const user = await User.findById(id).select('-password');
     done(null, user);
   } catch (error) {
     console.error('Error deserializing user:', error);

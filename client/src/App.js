@@ -14,6 +14,7 @@ import Companies from './pages/Companies';
 import Profile from './pages/Profile';
 import AdminPanel from './pages/AdminPanel';
 import EditQuestion from './pages/EditQuestion';
+import AuthCallback from './pages/AuthCallback';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import TestOAuth from './pages/TestOAuth';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/companies" element={<Companies />} />
           <Route path="/company/:id" element={<CompanyPage />} />
           <Route path="/question/:id" element={<QuestionDetail />} />
+          <Route path="/auth-callback" element={<AuthCallback />} />
 
           {/* Protected Routes */}
           <Route path="/dashboard" element={

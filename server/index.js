@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const session = require('express-session');
 const passport = require('passport');
-const MongoStore = require('connect-mongo'); // Import connect-mongo
 
 // Load environment variables
 dotenv.config();
@@ -31,7 +29,7 @@ app.use(cors({
     'https://nxt-round-git-main-nxt-round.vercel.app',
     'http://localhost:3000'
   ],
-  credentials: true,
+  credentials: false, // No longer need credentials for JWT
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
@@ -52,23 +50,8 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.error('MongoDB connection error:', err);
 });
 
-// Session configuration
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }), // Use MongoStore
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Adjust for cross-site cookies in production
-    httpOnly: true
-  }
-}));
-
-// Passport middleware
+// Passport middleware (only initialize, no session)
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use('/api/auth', authRoutes); // Use auth routes for Google OAuth

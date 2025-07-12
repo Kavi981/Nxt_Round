@@ -9,13 +9,16 @@ const API_BASE_URL = process.env.NODE_ENV === 'development'
 // Set base URL for all API calls
 axios.defaults.baseURL = API_BASE_URL;
 
-// Configure axios to include credentials for session-based authentication
-axios.defaults.withCredentials = true;
+// Remove credentials as we're using JWT tokens
+axios.defaults.withCredentials = false;
 
-// Add request interceptor to handle errors
+// Add request interceptor to include JWT token
 axios.interceptors.request.use(
   (config) => {
-    // Add any request headers here if needed
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -30,8 +33,9 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access
-      console.log('Unauthorized access');
+      // Handle unauthorized access - clear token and redirect
+      localStorage.removeItem('token');
+      window.location.href = '/';
     }
     return Promise.reject(error);
   }
