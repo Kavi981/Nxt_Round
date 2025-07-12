@@ -22,8 +22,7 @@ Add these environment variables in your Render dashboard:
 - `GOOGLE_CLIENT_SECRET`: Your Google OAuth client secret
 - `GOOGLE_CALLBACK_URL`: Your OAuth callback URL
 
-### JWT Secret
-- `JWT_SECRET`: A secure random string for JWT token signing
+
 
 ## Render Configuration
 
