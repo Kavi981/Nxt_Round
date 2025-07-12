@@ -1,8 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-
-// Configure axios to include credentials for session-based authentication
-axios.defaults.withCredentials = true;
+import axios from '../config/api';
 
 const AuthContext = createContext();
 
@@ -42,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   const login = () => {
     // Redirect the user to the backend's Google OAuth route
     // Use the full backend URL to ensure it works even if proxy fails
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = 'https://nxt-round.onrender.com/api/auth/google';
   };
 
   // Register function is removed as registration happens via Google OAuth

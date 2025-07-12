@@ -18,19 +18,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import TestOAuth from './pages/TestOAuth';
 
-// Component to handle API redirects
-const ApiRedirect = () => {
-  React.useEffect(() => {
-    const backendUrl = 'http://localhost:5000' + window.location.pathname + window.location.search;
-    window.location.href = backendUrl;
-  }, []);
-  
-  return (
-    <div className="text-center py-8">
-      <p>Redirecting to backend...</p>
-    </div>
-  );
-};
+
 
 function App() {
   return (
@@ -76,8 +64,7 @@ function App() {
             </AdminRoute>
           } />
           
-          {/* Catch-all route for API calls - redirect to backend */}
-          <Route path="/api/*" element={<ApiRedirect />} />
+
         </Routes>
       </main>
       <Footer />
