@@ -10,7 +10,9 @@
     "build": "cd client && npm run build",
     "install-server": "cd server && npm install",
     "install-client": "cd client && npm install",
-    "install-all": "npm run install-server && npm run install-client"
+    "install-all": "npm run install-server && npm run install-client",
+    "start": "cd server && node index.js",
+    "build-all": "npm run install-all && npm run build"
   },
   "dependencies": {
     "concurrently": "^8.2.2"
