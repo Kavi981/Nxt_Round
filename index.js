@@ -25,8 +25,15 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
+  origin: [
+    process.env.CLIENT_URL || 'https://nxt-round.vercel.app',
+    'https://nxt-round.vercel.app',
+    'https://nxt-round.vercel.app/',
+    'http://localhost:3000'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -68,7 +75,22 @@ app.use('/api/activities', activityRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'Server is running' });
+  res.json({ 
+    status: 'Server is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    clientUrl: process.env.CLIENT_URL
+  });
+});
+
+// Test OAuth configuration
+app.get('/api/test-oauth', (req, res) => {
+  res.json({
+    googleClientId: process.env.GOOGLE_CLIENT_ID ? 'Set' : 'Not set',
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ? 'Set' : 'Not set',
+    googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL || 'https://nxt-round.onrender.com/api/auth/google/callback',
+    clientUrl: process.env.CLIENT_URL || 'https://nxt-round.vercel.app'
+  });
 });
 
 // Error handling middleware
