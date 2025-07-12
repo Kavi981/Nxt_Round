@@ -19,14 +19,14 @@ router.get('/google/callback',
     console.log('Google OAuth callback received');
     console.log('Query params:', req.query);
     passport.authenticate('google', { 
-      failureRedirect: (process.env.CLIENT_URL || 'https://nxt-round.vercel.app') + '/',
+      failureRedirect: (process.env.CLIENT_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://nxt-round.vercel.app')) + '/',
       failureFlash: true
     })(req, res, next);
   },
   (req, res) => {
     console.log('OAuth successful, user:', req.user);
     // Successful authentication, redirect to client dashboard or home
-    const clientUrl = process.env.CLIENT_URL || 'https://nxt-round.vercel.app';
+    const clientUrl = process.env.CLIENT_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://nxt-round.vercel.app');
     res.redirect(clientUrl + '/dashboard');
   });
 

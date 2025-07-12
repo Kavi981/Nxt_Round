@@ -38,8 +38,11 @@ export const AuthProvider = ({ children }) => {
   // Login function now initiates Google OAuth redirect
   const login = () => {
     // Redirect the user to the backend's Google OAuth route
-    // Use the full backend URL to ensure it works even if proxy fails
-    window.location.href = 'https://nxt-round.onrender.com/api/auth/google';
+    // Use the appropriate backend URL based on environment
+    const backendUrl = process.env.NODE_ENV === 'development' 
+      ? 'http://localhost:5000' 
+      : 'https://nxt-round.onrender.com';
+    window.location.href = `${backendUrl}/api/auth/google`;
   };
 
   // Register function is removed as registration happens via Google OAuth
