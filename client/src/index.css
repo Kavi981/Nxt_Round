@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    /* Using secondary-50 for background */
+    @apply bg-secondary-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    /* Using new primary colors */
+    @apply bg-primary-600 text-white hover:bg-primary-700;
+  }
+  
+  .btn-secondary {
+    /* Using new secondary colors */
+    @apply bg-secondary-200 text-secondary-700 hover:bg-secondary-300;
+  }
+  
+  .btn-outline {
+    /* Using new secondary colors */
+    @apply border border-secondary-300 text-secondary-700 hover:bg-secondary-50;
+  }
+  
+  .card {
+    /* Using new secondary colors */
+    @apply bg-white rounded-lg shadow-sm border border-secondary-200;
+  }
+  
+  .input {
+    /* Using new secondary and primary colors */
+    @apply block w-full rounded-md border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500;
+  }
+}
