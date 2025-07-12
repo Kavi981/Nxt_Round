@@ -5,7 +5,13 @@ const router = express.Router();
 
 // Initiate Google OAuth flow
 router.get('/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
+  (req, res, next) => {
+    console.log('Starting Google OAuth flow...');
+    console.log('Client ID:', process.env.GOOGLE_CLIENT_ID ? 'Set' : 'Not set');
+    console.log('Client Secret:', process.env.GOOGLE_CLIENT_SECRET ? 'Set' : 'Not set');
+    console.log('Callback URL:', process.env.GOOGLE_CALLBACK_URL);
+    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+  });
 
 // Google OAuth callback
 router.get('/google/callback',

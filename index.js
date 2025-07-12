@@ -10,26 +10,22 @@ const MongoStore = require('connect-mongo'); // Import connect-mongo
 dotenv.config();
 
 // Import Passport config
-require('./server/config/passport');
+require('./config/passport');
 
 // Import routes
-const questionRoutes = require('./server/routes/questions');
-const userRoutes = require('./server/routes/users');
-const companyRoutes = require('./server/routes/companies');
-const statsRoutes = require('./server/routes/stats');
-const authRoutes = require('./server/routes/auth'); // Import auth routes for Google OAuth
-const { router: activityRoutes } = require('./server/routes/activities');
+const questionRoutes = require('./routes/questions');
+const userRoutes = require('./routes/users');
+const companyRoutes = require('./routes/companies');
+const statsRoutes = require('./routes/stats');
+const authRoutes = require('./routes/auth'); // Import auth routes for Google OAuth
+const { router: activityRoutes } = require('./routes/activities');
 
 // Initialize Express app
 const app = express();  
 
 // Middleware
 app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || 'http://localhost:3000',
-    'https://nxt-round.vercel.app',
-    'https://nxt-round.vercel.app/'
-  ],
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true
 }));
 app.use(express.json());
